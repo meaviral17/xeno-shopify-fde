@@ -20,4 +20,5 @@ app.use('/analytics', analytics);
 app.use('/tenants', tenants);
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(Backend listening on ));
+app.listen(PORT, () => console.log(`Backend listening on ${PORT}`));
+
