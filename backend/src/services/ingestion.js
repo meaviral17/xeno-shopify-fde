@@ -5,6 +5,7 @@ async function upsertCustomer(storeId, payload) {
   const email = payload.email || null;
   const firstName = payload.first_name || payload.firstName || null;
   const lastName = payload.last_name || payload.lastName || null;
+
   await prisma.customer.upsert({
     where: { shopId },
     update: { email, firstName, lastName, storeId },
@@ -16,6 +17,7 @@ async function upsertProduct(storeId, payload) {
   const shopId = String(payload.id);
   const title = payload.title || payload.name || 'Untitled';
   const price = parseFloat(payload.variants?.[0]?.price || payload.price || 0);
+
   await prisma.product.upsert({
     where: { shopId },
     update: { title, price, storeId },
@@ -25,28 +27,36 @@ async function upsertProduct(storeId, payload) {
 
 async function upsertOrder(storeId, payload) {
   const shopId = String(payload.id);
-  const totalPrice = parseFloat(payload.total_price || payload.total_price_usd || payload.totalPrice || 0);
-  const customerShopId = payload.customer ? String(payload.customer.id) : null;
+  const totalPrice = parseFloat(payload.total_price || payload.current_total_price || 0);
 
-  if (customerShopId) {
-    await prisma.customer.upsert({
-      where: { shopId: customerShopId },
-      update: {},
-      create: { shopId: customerShopId, storeId }
-    });
-  }
+  console.log("UPSERT ORDER CALLED:", storeId, shopId);
 
-  const customer = customerShopId ? await prisma.customer.findUnique({ where: { shopId: customerShopId } }) : null;
+  // Link to customer if exists
+  const customerShopId = payload.customer?.id ? String(payload.customer.id) : null;
+  const customer = customerShopId
+    ? await prisma.customer.findUnique({ where: { shopId: customerShopId } })
+    : null;
   const customerId = customer ? customer.id : null;
 
+  // Upsert order
   await prisma.order.upsert({
     where: { shopId },
     update: { totalPrice, customerId, storeId },
-    create: { shopId, totalPrice, customerId, storeId }
+    create: {
+      shopId,
+      totalPrice,
+      customerId,
+      storeId,
+      createdAt: new Date(payload.created_at || Date.now())
+    }
   });
 
+  // Update customer's totalSpent
   if (customerId) {
-    const sum = await prisma.order.aggregate({ where: { customerId }, _sum: { totalPrice: true } });
+    const sum = await prisma.order.aggregate({
+      where: { customerId },
+      _sum: { totalPrice: true }
+    });
     await prisma.customer.update({
       where: { id: customerId },
       data: { totalSpent: sum._sum.totalPrice || 0 }

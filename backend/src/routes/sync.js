@@ -1,27 +1,20 @@
-﻿// backend/src/routes/sync.js
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
-const prisma = require('../prismaClient');
-const { syncAllForTenant } = require('../services/shopifyService');
+const { syncAllForTenant } = require('../services/syncService');
 
 // POST /sync/full?tenantId=1
 router.post('/full', async (req, res) => {
   try {
     const tenantId = parseInt(req.query.tenantId, 10);
-    if (!tenantId) {
-      return res.status(400).json({ error: 'Missing tenantId' });
+    if (isNaN(tenantId)) {
+      return res.status(400).json({ error: 'Invalid tenantId' });
     }
 
-    const tenant = await prisma.tenant.findUnique({ where: { id: tenantId } });
-    if (!tenant) {
-      return res.status(404).json({ error: 'Tenant not found' });
-    }
-
-    const result = await syncAllForTenant(tenant);
-    res.json(result);
+    await syncAllForTenant(tenantId);
+    res.json({ message: `Full sync complete for tenant ${tenantId}` });
   } catch (err) {
-    console.error('Sync error:', err);
-    res.status(500).json({ error: 'Sync failed', detail: err.message });
+    console.error('❌ Sync error:', err);
+    res.status(500).json({ error: 'Sync failed' });
   }
 });
 
