@@ -4,6 +4,7 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
+    "worker": "node src/worker.js",
     "start": "node src/index.js",
     "migrate": "npx prisma migrate dev --name init",
     "prisma-generate": "npx prisma generate",
@@ -11,13 +12,13 @@
   },
   "dependencies": {
     "@prisma/client": "^6.16.0",
-    "axios": "^1.11.0",
+    "axios": "^1.12.1",
     "body-parser": "^2.2.0",
-    "bullmq": "^5.58.5",
+    "bullmq": "^5.0.0",
     "crypto": "^1.0.1",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
-    "ioredis": "^5.7.0",
+    "ioredis": "^5.3.2",
     "node-cron": "^4.2.1",
     "pg": "^8.16.3",
     "pino": "^9.9.5"
