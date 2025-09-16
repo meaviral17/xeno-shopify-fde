@@ -10,8 +10,13 @@ router.post('/full', async (req, res) => {
       return res.status(400).json({ error: 'Invalid tenantId' });
     }
 
-    await syncAllForTenant(tenantId);
-    res.json({ message: `Full sync complete for tenant ${tenantId}` });
+    // Wait for sync and capture summary
+    const summary = await syncAllForTenant(tenantId);
+
+    res.json({
+      message: `✅ Full sync complete for tenant ${tenantId}`,
+      ...summary
+    });
   } catch (err) {
     console.error('❌ Sync error:', err);
     res.status(500).json({ error: 'Sync failed' });
