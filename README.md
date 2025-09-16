@@ -1,13 +1,14 @@
-## 📄 README.md
-
-````markdown
 # Xeno FDE Assignment – Shopify Data Ingestion & Analytics
 
 This project implements a **multi-tenant backend** for ingesting data from Shopify stores (via Webhooks & Admin API Sync) and exposing **analytics endpoints**.  
 It was built as part of the **Xeno FDE Internship Assignment – 2025**.
 
 Built by: Aviral Srivastava 22BAI1187
+
+
 College: Vellore Institute of Technology
+
+
 ---
 
 ## 📌 Features
@@ -22,6 +23,7 @@ College: Vellore Institute of Technology
 ---
 
 ## 🏗️ Architecture
+<img width="2048" height="531" alt="image" src="https://github.com/user-attachments/assets/1fc606a2-fe8e-4651-a8be-8d0c572bd468" />
 
 
 ---
@@ -167,23 +169,5 @@ backend/
   docker-compose.yml
 ```
 
----
-
-## ✅ Status
-
-* [x] Backend setup with Express + Prisma
-* [x] Dockerized Postgres + Redis
-* [x] Webhook endpoint + verification
-* [x] Full sync endpoint with ingestion
-* [ ] Analytics APIs (Task 3)
-* [ ] Documentation polish + deployment
-
----
-
-## 📖 License
-
-MIT
-
-```
 
 
