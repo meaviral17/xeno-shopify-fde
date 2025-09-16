@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Xeno FDE — Dashboard</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>Xeno FDE — Dashboard</h1>
+    <div class="controls">
+      <input id="storeId" type="number" placeholder="storeId (eg. 1)" />
+      <button id="btnSync">Full Sync</button>
+      <button id="btnRefresh">Refresh Data</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Summary</h2>
+      <div id="summary">
+        <div class="metric"><strong>Customers:</strong> <span id="customers">—</span></div>
+        <div class="metric"><strong>Products:</strong> <span id="products">—</span></div>
+        <div class="metric"><strong>Orders:</strong> <span id="orders">—</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Revenue (Last N Orders)</h2>
+      <div id="revenueChart" class="chart"></div>
+    </section>
+
+    <section class="card">
+      <h2>Top Customers</h2>
+      <table id="topCustomers">
+        <thead><tr><th>#</th><th>Name / Email</th><th>Total Spent</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Raw Response</h2>
+      <pre id="raw" class="raw">—</pre>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>Set API endpoint via <code>API_BASE_URL</code> (default: same origin)</small>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
